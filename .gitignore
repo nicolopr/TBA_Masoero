@@ -1,5 +1,6 @@
-./a=*
-./data/*
-./__pycache__/*
-./.ipynb_checkpoints/*
-./*.nb
+a=*
+data/*
+__pycache__/*
+.ipynb_checkpoints/*
+*.nb
+.DS_Store
