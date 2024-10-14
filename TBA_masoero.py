@@ -179,22 +179,19 @@ def get_filename(r, a):
     script_dir = os.path.dirname(__file__)
     return script_dir+f'/data/a={a}', script_dir+f'/data/a={a}/r={r}'
 
-def convert_list_to_mathematica_string(list):
-    return str(list).replace(']','}').replace('[','{')
-
 def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
-    e1=convert_list_to_mathematica_string(epsilon1)
-    e2=convert_list_to_mathematica_string(epsilon2)
-    e3=convert_list_to_mathematica_string(epsilon3)
-    e4=convert_list_to_mathematica_string(epsilon4)
-    e5=convert_list_to_mathematica_string(epsilon5)
+    e1=[complex(x) for x in epsilon1]
+    e2=[complex(x) for x in epsilon2]
+    e3=[complex(x) for x in epsilon3]
+    e4=[complex(x) for x in epsilon4]
+    e5=[complex(x) for x in epsilon5]
     path=get_filename(r,a)[0]
     filename=get_filename(r,a)[-1]
-    if not os.path.exists(path):
-        os.makedirs(path)
-    with open(filename, 'w') as file:
-        file.write(e1)
-        file.write(e2)
-        file.write(e3)
-        file.write(e4)
-        file.write(e5)
+    if not os.path.exists(filename):
+        os.makedirs(filename)
+    print('saved in folder'+filename)
+    np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",", fmt="%i")
+    np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",", fmt="%i")
+    np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",", fmt="%i")
+    np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",", fmt="%i")
+    np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",", fmt="%i")
