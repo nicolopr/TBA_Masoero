@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import os
+from wolframclient.language import wl, wlexpr
+from wolframclient.serializers import export
 
 # Set parameters for a != 0
 def discretize_rapidity(rapidityMax,rapidityMin,numPoints):
@@ -179,19 +181,34 @@ def get_filename(r, a):
     script_dir = os.path.dirname(__file__)
     return script_dir+f'/data/a={a}', script_dir+f'/data/a={a}/r={r}'
 
+def wolfram_export(data, path):
+    wolfram_expr = wl.List(*[complex(c.real, c.imag) for c in data])
+
+    # Specify the output file path for the .mx file
+    output_file = path
+
+    # Export the Wolfram Language expression to a .mx file
+    export(wolfram_expr, output_file, target_format='wxf')
+
+
 def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
-    e1=[complex(x) for x in epsilon1]
-    e2=[complex(x) for x in epsilon2]
-    e3=[complex(x) for x in epsilon3]
-    e4=[complex(x) for x in epsilon4]
-    e5=[complex(x) for x in epsilon5]
+    # e1=[complex(x) for x in epsilon1]
+    # e2=[complex(x) for x in epsilon2]
+    # e3=[complex(x) for x in epsilon3]
+    # e4=[complex(x) for x in epsilon4]
+    # e5=[complex(x) for x in epsilon5]
     path=get_filename(r,a)[0]
     filename=get_filename(r,a)[-1]
     if not os.path.exists(filename):
         os.makedirs(filename)
     print('saved in folder'+filename)
-    np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",")
-    np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",")
-    np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",")
-    np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",")
-    np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",")
+    wolfram_export(epsilon1,f"data/a={a}/r={r}/e1.mx")
+    wolfram_export(epsilon2,f"data/a={a}/r={r}/e2.mx")
+    wolfram_export(epsilon3,f"data/a={a}/r={r}/e3.mx")
+    wolfram_export(epsilon4,f"data/a={a}/r={r}/e4.mx")
+    wolfram_export(epsilon5,f"data/a={a}/r={r}/e5.mx")
+    # np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",")
+    # np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",")
+    # np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",")
+    # np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",")
+    # np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",")
