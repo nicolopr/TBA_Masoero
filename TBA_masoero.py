@@ -192,11 +192,6 @@ def wolfram_export(data, path):
 
 
 def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
-    # e1=[complex(x) for x in epsilon1]
-    # e2=[complex(x) for x in epsilon2]
-    # e3=[complex(x) for x in epsilon3]
-    # e4=[complex(x) for x in epsilon4]
-    # e5=[complex(x) for x in epsilon5]
     path=get_filename(r,a)[0]
     filename=get_filename(r,a)[-1]
     if not os.path.exists(filename):
@@ -207,8 +202,3 @@ def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
     wolfram_export(epsilon3,f"data/a={a}/r={r}/e3.mx")
     wolfram_export(epsilon4,f"data/a={a}/r={r}/e4.mx")
     wolfram_export(epsilon5,f"data/a={a}/r={r}/e5.mx")
-    # np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",")
-    # np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",")
-    # np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",")
-    # np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",")
-    # np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",")
