@@ -190,8 +190,8 @@ def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
     if not os.path.exists(filename):
         os.makedirs(filename)
     print('saved in folder'+filename)
-    np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",", fmt="%i")
-    np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",", fmt="%i")
-    np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",", fmt="%i")
-    np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",", fmt="%i")
-    np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",", fmt="%i")
+    np.savetxt(f"data/a={a}/r={r}/e1.pythondata", e1, delimiter=",")
+    np.savetxt(f"data/a={a}/r={r}/e2.pythondata", e2, delimiter=",")
+    np.savetxt(f"data/a={a}/r={r}/e3.pythondata", e3, delimiter=",")
+    np.savetxt(f"data/a={a}/r={r}/e4.pythondata", e4, delimiter=",")
+    np.savetxt(f"data/a={a}/r={r}/e5.pythondata", e5, delimiter=",")
