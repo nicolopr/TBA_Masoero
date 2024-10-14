@@ -1,0 +1,298 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     11395,        290]
+NotebookOptionsPosition[     10288,        263]
+NotebookOutlinePosition[     10679,        279]
+CellTagsIndexPosition[     10636,        276]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+   "this", " ", "notebook", " ", "lets", " ", "you", " ", "select", " ", 
+    "data", " ", "generated", " ", "by", " ", "Python", " ", "code", " ", 
+    "via", " ", "the", " ", "variables", " ", "avals", " ", "and", " ", 
+    "rvals"}], ",", " ", 
+   RowBox[{
+    RowBox[{
+    "and", " ", "stores", " ", "it", " ", "in", " ", "a", " ", 
+     "Mathematica"}], "-", 
+    RowBox[{"friendly", " ", 
+     RowBox[{"format", "."}]}]}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.937908101583214*^9, 
+  3.937908150021296*^9}},ExpressionUUID->"ba78b5dc-655f-4bdf-a9e3-\
+929862bcbade"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"formatComplex", "[", "s_String", "]"}], ":=", 
+  RowBox[{"StringReplace", "[", 
+   RowBox[{"s", ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\"\<j\>\"", "->", "\"\<I\>\""}], ",", 
+      RowBox[{"\"\<(\>\"", "->", "\"\<\>\""}], ",", 
+      RowBox[{"\"\<)\>\"", "->", "\"\<\>\""}]}], "}"}]}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"toComplex", "[", "s_String", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Interpreter", "[", "\"\<ComplexNumber\>\"", "]"}], "[", "s", 
+    "]"}]}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "conversion", " ", "formulas", " ", "from", " ", "Python", " ", "data", 
+    " ", "to", " ", "mathematica", " ", "lists"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"convertData", "[", "filenames_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "dataeps", ",", "dataepspython", ",", "dataarr", ",", "pathtosave"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"dataarr", "=", 
+       RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"i", "=", "1"}], ",", 
+        RowBox[{"i", "<", 
+         RowBox[{"Length", "[", "filenames", "]"}]}], ",", 
+        RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"StringTake", "[", 
+            RowBox[{
+             RowBox[{"filenames", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], ",", 
+             RowBox[{"-", "10"}]}], "]"}], "==", "\"\<pythondata\>\""}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"dataepspython", "=", 
+            RowBox[{"Import", "[", 
+             RowBox[{"filenames", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"dataeps", "=", 
+            RowBox[{"toComplex", "/@", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Interpreter", "[", "\"\<List\>\"", "]"}], "[", 
+                RowBox[{"formatComplex", "/@", 
+                 RowBox[{"(", 
+                  RowBox[{"dataepspython", "//", "Flatten"}], ")"}]}], "]"}], 
+               "//", "Flatten"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"dataarr", "=", 
+            RowBox[{"Append", "[", 
+             RowBox[{"dataarr", ",", "dataeps"}], "]"}]}]}]}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"pathtosave", "=", 
+       RowBox[{"StringJoin", "[", 
+        RowBox[{
+         RowBox[{"StringDrop", "[", 
+          RowBox[{
+           RowBox[{"filenames", "[", 
+            RowBox[{"[", "2", "]"}], "]"}], ",", 
+           RowBox[{"-", "13"}]}], "]"}], ",", "\"\<epsilon.mx\>\""}], "]"}]}],
+       ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"pathtosave", ",", "dataarr"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"\"\<saved to\>\"", ",", "pathtosave"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "main", " ", "function", " ", "to", " ", "import", " ", "python", " ", 
+      "data", " ", "and", " ", "put", " ", "them", " ", "into", " ", 
+      "dataeps", " ", "variables"}], ";", " ", 
+     RowBox[{
+      RowBox[{"dataeps", "[", "1", "]"}], "=", 
+      SubscriptBox["\[Epsilon]", "1"]}]}], ",", 
+    RowBox[{
+     RowBox[{"dataeps", "[", "2", "]"}], "=", 
+     RowBox[{
+      SubscriptBox["\[Epsilon]", "2"], " ", "etc"}]}]}], "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.937886340727804*^9, 3.937886357297359*^9}, {
+   3.937886517253603*^9, 3.937886535931939*^9}, {3.9378866019302397`*^9, 
+   3.937886653578293*^9}, {3.937905103313242*^9, 3.937905123180422*^9}, {
+   3.937905274136119*^9, 3.9379052811118526`*^9}, {3.93790533090967*^9, 
+   3.9379053414488564`*^9}, {3.937905377804242*^9, 3.9379053854530973`*^9}, {
+   3.9379056592082453`*^9, 3.9379056660359077`*^9}, {3.937905805732605*^9, 
+   3.937905857841926*^9}, {3.937905916733901*^9, 3.93790593288911*^9}, {
+   3.9379061005014887`*^9, 3.937906131350815*^9}, {3.9379062493013144`*^9, 
+   3.937906274737956*^9}, {3.937906382587739*^9, 3.937906502933374*^9}, 
+   3.9379066071496143`*^9, {3.937906710153014*^9, 3.937906814805101*^9}, {
+   3.93790688292428*^9, 3.937906897152505*^9}, {3.937906986966536*^9, 
+   3.93790698716567*^9}, {3.937907088928046*^9, 3.937907089065104*^9}, {
+   3.9379071851006813`*^9, 3.937907387830906*^9}, {3.937907425540559*^9, 
+   3.937907439670166*^9}, {3.937907497531311*^9, 3.937907542399806*^9}, {
+   3.9379079570496387`*^9, 3.937907957265252*^9}},
+ CellLabel->
+  "In[300]:=",ExpressionUUID->"5744bbf5-4d0a-4a9d-98a1-26afb6deee56"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"datadir", "=", 
+   RowBox[{"StringJoin", "[", 
+    RowBox[{
+     RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<data\>\""}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"avals", "=", 
+  RowBox[{"FileNames", "[", 
+   RowBox[{"All", ",", "datadir"}], "]"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"read", " ", "all", " ", "values", " ", "of", " ", "a"}], 
+   "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.9378843735732*^9, 3.937884416829816*^9}, {
+   3.93788444960809*^9, 3.937884471270705*^9}, 3.937884508244038*^9, {
+   3.9378845557684*^9, 3.937884573604903*^9}, {3.937904766901334*^9, 
+   3.93790482257402*^9}},
+ CellLabel->
+  "In[295]:=",ExpressionUUID->"22e63a5c-bc68-4a75-a2a2-cefefef103e8"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"/Users/nicolo/TBA masoero dati/data/a=1\"\>", 
+   ",", "\<\"/Users/nicolo/TBA masoero dati/data/.DS_Store\"\>"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.937884377263947*^9, 3.937884417567704*^9}, 
+   3.9378844720114*^9, 3.937884509137925*^9, 3.937884574100799*^9, {
+   3.937904776464753*^9, 3.937904822904502*^9}, 3.937905514818771*^9, {
+   3.937905919720777*^9, 3.937905935567197*^9}, 3.937906417815929*^9, 
+   3.9379065057778797`*^9, 3.937906559892655*^9, 3.93790661067691*^9, 
+   3.9379066412546387`*^9, 3.937906817388435*^9, 3.93790686523667*^9, 
+   3.93790703106778*^9, 3.937907091526841*^9, 3.9379078936224747`*^9},
+ CellLabel->
+  "Out[296]=",ExpressionUUID->"6cf34d86-62d3-4608-866b-0c5ee1261bb0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"rvals", "=", 
+  RowBox[{"FileNames", "[", 
+   RowBox[{"All", ",", 
+    RowBox[{"avals", "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}], "]"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "choose", " ", "a", " ", "value", " ", "of", " ", "a", " ", "from", " ", 
+    "list", " ", "avals", " ", "and", " ", "display", " ", "all", " ", 
+    "possible", " ", "value", " ", "of", " ", "r"}], "*)"}]}]], "Input",
+ CellChangeTimes->{{3.937904842329831*^9, 3.937904865889686*^9}, {
+  3.9379066470500717`*^9, 3.9379066494045973`*^9}},
+ CellLabel->
+  "In[297]:=",ExpressionUUID->"0d4918a1-de42-496f-98d6-615dd851b8db"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"/Users/nicolo/TBA masoero dati/data/a=1/.DS_Store\"\>", 
+   ",", "\<\"/Users/nicolo/TBA masoero dati/data/a=1/r=1e-05\"\>"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{
+  3.937904829355626*^9, 3.937904866375506*^9, 3.9379055170502377`*^9, {
+   3.937905921281402*^9, 3.9379059371826344`*^9}, 3.937906418979694*^9, 
+   3.93790650707084*^9, 3.937906562030683*^9, 3.937906612114118*^9, {
+   3.9379066426994057`*^9, 3.9379066497872467`*^9}, 3.93790681886451*^9, {
+   3.93790685363336*^9, 3.937906867021482*^9}, {3.937907031088284*^9, 
+   3.937907040781629*^9}, 3.937907092944124*^9, 3.937907895264905*^9},
+ CellLabel->
+  "Out[297]=",ExpressionUUID->"b7a75cef-8258-4cde-b9a4-d685701e6ce6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"filenames", "=", 
+    RowBox[{"FileNames", "[", 
+     RowBox[{"All", ",", 
+      RowBox[{"rvals", "[", 
+       RowBox[{"[", 
+        RowBox[{"-", "1"}], "]"}], "]"}]}], "]"}]}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{"choose", " ", "value", " ", "of", " ", "r"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"convertData", "[", "filenames", "]"}]}], "Input",
+ CellChangeTimes->{{3.9379049227166567`*^9, 3.937905091015705*^9}, {
+   3.937905131423398*^9, 3.937905308968989*^9}, {3.9379054014342937`*^9, 
+   3.937905405169724*^9}, {3.937906957065818*^9, 3.9379069748735313`*^9}, 
+   3.937907050450778*^9, {3.9379075605406446`*^9, 3.937907565061206*^9}},
+ CellLabel->
+  "In[298]:=",ExpressionUUID->"a87c9394-9a39-44b0-a27d-755539404ae9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"saved to\"\>", 
+   "\[InvisibleSpace]", "\<\"/Users/nicolo/TBA masoero \
+dati/data/a=1/r=1e-05/epsilon.mx\"\>"}],
+  SequenceForm[
+  "saved to", "/Users/nicolo/TBA masoero dati/data/a=1/r=1e-05/epsilon.mx"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.937907579634529*^9, 3.937907915383543*^9},
+ CellLabel->
+  "During evaluation of \
+In[298]:=",ExpressionUUID->"8ab98995-124e-42c4-988d-e7ef89f577b8"]
+}, Open  ]]
+},
+WindowSize->{808, 655},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"14.1 for Mac OS X ARM (64-bit) (July 16, 2024)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"7a06bfac-1d66-4f6a-a86e-64e0f9d456b5"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 627, 16, 49, "Input",ExpressionUUID->"ba78b5dc-655f-4bdf-a9e3-929862bcbade"],
+Cell[1184, 38, 4915, 115, 417, "Input",ExpressionUUID->"5744bbf5-4d0a-4a9d-98a1-26afb6deee56"],
+Cell[CellGroupData[{
+Cell[6124, 157, 735, 18, 49, "Input",ExpressionUUID->"22e63a5c-bc68-4a75-a2a2-cefefef103e8"],
+Cell[6862, 177, 752, 13, 33, "Output",ExpressionUUID->"6cf34d86-62d3-4608-866b-0c5ee1261bb0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7651, 195, 617, 14, 49, "Input",ExpressionUUID->"0d4918a1-de42-496f-98d6-615dd851b8db"],
+Cell[8271, 211, 725, 13, 53, "Output",ExpressionUUID->"b7a75cef-8258-4cde-b9a4-d685701e6ce6"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9033, 229, 781, 18, 49, "Input",ExpressionUUID->"a87c9394-9a39-44b0-a27d-755539404ae9"],
+Cell[9817, 249, 455, 11, 23, "Print",ExpressionUUID->"8ab98995-124e-42c4-988d-e7ef89f577b8"]
+}, Open  ]]
+}
+]
+*)
+
