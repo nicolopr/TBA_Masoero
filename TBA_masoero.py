@@ -65,7 +65,7 @@ def TBA_loop(r,a,rapidityMax,rapidityMin,numPoints):
     delta = 1
     iteration = 0
     deltaThreshold = 1e-6
-    maxIterations = 100
+    maxIterations = 300
 
     #discretize rapidity space
     rapidityVals,step=discretize_rapidity(rapidityMax,rapidityMin,numPoints)
