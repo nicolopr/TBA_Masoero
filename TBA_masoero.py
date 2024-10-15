@@ -191,12 +191,13 @@ def wolfram_export(data, path):
     export(wolfram_expr, output_file, target_format='wxf')
 
 
-def save_epsilon(r, a, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
+def save_epsilon(r, a, rapidities, epsilon1, epsilon2, epsilon3, epsilon4, epsilon5):
     path=get_filename(r,a)[0]
     filename=get_filename(r,a)[-1]
     if not os.path.exists(filename):
         os.makedirs(filename)
     print('saved in folder'+filename)
+    wolfram_export(rapidities,f"data/a={a}/r={r}/rapidities.mx")
     wolfram_export(epsilon1,f"data/a={a}/r={r}/e1.mx")
     wolfram_export(epsilon2,f"data/a={a}/r={r}/e2.mx")
     wolfram_export(epsilon3,f"data/a={a}/r={r}/e3.mx")
