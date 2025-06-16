@@ -6,7 +6,7 @@ from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 from wolframclient.language import wl, wlexpr
 from wolframclient.serializers import export
-from plotter import plot_epsilon_real, plot_epsilon_im, plot_Y0, compute_logY0
+from plotter import plot_epsilon_real
 
 # Set parameters for a != 0
 def discretize_rapidity(rapidityMax,rapidityMin,numPoints):
@@ -49,7 +49,7 @@ def compute_convolution(coeffs, lambdas, step, phi_0, phi_1, phi_2, phi_m1, phi_
         + coeffs[3] * phi_m1.dot(lambdas[3])
         + coeffs[4] * phi_m2.dot(lambdas[4])
     )
-    return (step / (2 * np.pi)) * conv / 5 #for some reason he puts in the kernels definitions an extra factor of 2*pi, and removes it here. Who knows why.
+    return (step / (2 * np.pi)) * conv / 5
 
 # Precompute phi matrices
 def compute_phi_on_rapidities(rapidityVals):
@@ -134,7 +134,6 @@ def TBA_loop(r,a,rapidityMax,rapidityMin,numPoints):
 
         # Print iteration info
         #print(f"Iteration {iteration}: delta = {delta}")
-    print(epsilon1New[len(epsilon1New)//2],epsilon2New[len(epsilon1New)//2],epsilon3New[len(epsilon1New)//2],epsilon4New[len(epsilon1New)//2])
     return epsilon1New, epsilon2New, epsilon3New, epsilon4New, epsilon5New
 
 # Define the function to compute the central charge 'c'
@@ -164,10 +163,14 @@ def cycle_central_charge(r_min, r_max, r_step):
     while r<=r_max:
         print('valore di r:',r)
         a = A*(r**(1/5))
+        sumre=lambda n: np.real(n)+np.imag(n)
         e1,e2,e3,e4,e5=TBA_loop(r,a,rapidityMax,rapidityMin,numPoints)
-        Y0=compute_logY0(e1,e2,e3,e4,e5)
-        rapvals=discretize_rapidity(rapidityMax,rapidityMin,numPoints)
-        print(Y0[len(Y0)//2])
+        plot_epsilon_real(rapidityvals,np.log(1+np.exp(-np.real(e1))),np.log(1+np.exp(-np.real(e2))),np.log(1+np.exp(-np.real(e3))),np.log(1+np.exp(-np.real(e4))),np.log(1+np.exp(-np.real(e5))))
+        plot_epsilon_real(rapidityvals,np.real(np.log(1+np.exp(-e1))),np.real(np.log(1+np.exp(-e2))),np.real(np.log(1+np.exp(-e3))),np.real(np.log(1+np.exp(-e4))),np.real(np.log(1+np.exp(-e5))))
+        plot_epsilon_real(rapidityvals,np.imag(np.log(1+np.exp(-e1))),np.imag(np.log(1+np.exp(-e2))),np.imag(np.log(1+np.exp(-e3))),np.imag(np.log(1+np.exp(-e4))),np.imag(np.log(1+np.exp(-e5))))
+        plot_epsilon_real(rapidityvals,sumre(np.log(1+np.exp(-e1))),sumre(np.log(1+np.exp(-e2))),sumre(np.log(1+np.exp(-e3))),sumre(np.log(1+np.exp(-e4))),sumre(np.log(1+np.exp(-e5))))
+        # plot_Y0(rapvals[0],logY0)
+        # plot_epsilon_real(rapvals[0],e1,e2,e3,e4,e5)
         cc=compute_central_charge(r, a, rapidityvals, e1, e2, e3, e4, e5, discretize_rapidity(rapidityMax, rapidityMin, numPoints)[1])
         central_charges.append([r,cc])
         r=r+r_step
@@ -200,14 +203,15 @@ rapidityMax = 20
 rapidityMin = -20
 
 numPoints = 1001
-A = 0.01
+A = 10
 
 rapidityvals=discretize_rapidity(rapidityMax,rapidityMin, numPoints)[0]
 
-r_min=0.0001
-r_max=0.001
+r_min=0.01
+r_max=0.1
 num_of_steps = 2
 r_step=(r_max-r_min)/num_of_steps
 
 r_and_c = cycle_central_charge(r_min, r_max, r_step)
 print(r_and_c)
+save_charge(A,r_and_c)

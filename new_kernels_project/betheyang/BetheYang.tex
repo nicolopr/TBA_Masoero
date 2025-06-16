@@ -1,0 +1,50 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{physics}
+\usepackage{mathrsfs}
+\usepackage{amsthm,amssymb}
+\begin{document}
+The Bethe-Yang equations generalise the Bethe Ansatz equations to relativistic systems. In particular, they arise as a quantisation condition for the wavefunction of 
+a particle on a torus of radius $R$.
+
+To derive the Bethe-Yang equations for our graded theory, we assume that on the torus there are $L_{k}, \,k=1\dots 5$ particles for each species, and that they are sufficiently diluted so that there are regions where each particle can
+ be considered free. We then take one particle of the species $k$ and make it go around the torus; in the transition between free regions, it will pass through an interaction zone with the particle $j$ of the $l$-th species.
+ The interaction has the effect of multiplying the wavefunction of the system by the S matrix factor $S_{kl}(\theta_{i_{k}},\theta_{j_{l}})$. Then the Bethe-Yang equations are a consequence of the (quasi-)periodic
+ boundary conditions on the torus of radius $R$ and are given by:
+ \begin{equation}
+    \label{eq:BetheYang}
+   1=e^{i\mu_k} e^{i R \,p_{i_k}} \prod_{l \in \mathbb{Z}_5}\prod_{j_{l}\neq i_{k}}^{L_{l}}S_{kl}(\theta_{i_{k}},\theta_{j_{l}})\,,\quad i_{k}=1\dots L_{k}\,,\,\, k \in \mathbb{Z}_5\,. 
+ \end{equation}
+From these equations, it is possible to obtain the Thermodynamic Bethe Ansatz in the thermodynamic limit $L_{k}\rightarrow \infty$. Our derivation follows closely (Zamolodchikov paper \cite{...}).
+First, rewrite \eqref{eq:BetheYang} in logarithmic form:
+\begin{equation}
+   i\mu_i+ i m \,R \sinh{\theta_{i_k}} +\sum_{l \in \mathbb{Z}_5}\sum_{j_{l}\neq i_{k}}^{L_{l}}\log{S_{kl}(\theta_{i_{k}},\theta_{j_{l}})}=2\pi n_{i_k}\,,\quad i_{k}=1\dots L_{k}\,,\,\, k \in \mathbb{Z}_5\,, 
+\end{equation}
+where $n_{i_k}$ is the mode number for the species $k$.
+In the thermodynamic limit, we can express the sum over $j_{l}$ as an integral via the introduction of the particle densities in the rapidity interval $\Delta\theta_{j_{l}}$, namely $\rho_{l}$. We get:
+\begin{equation}
+    i\mu_k+ i m R \sinh{\theta_{k}} +\sum_{l \in \mathbb{Z}_5}\int_{-\infty}^{+\infty}\log{S_{kl}(\theta_{{k}},\theta_{{l}})}\;\rho_{l}(\theta_{{l}})d\theta_{{l}}=2\pi n_{k}\,,\quad  k \in \mathbb{Z}_5\,.
+\end{equation}
+We derive this equation by $\theta_{k}$, introducing the density of levels for the species $k$, $\rho_{tot,k}=\rho_{k}+\bar{\rho}_{k}\equiv \frac{d n_k}{d \theta_{k}}$, where $\bar{\rho}_{k}$ is the hole density, obtaining:
+\begin{equation}
+    \label{eq:densityconstr}
+    \frac{m R \cosh{\theta_{k}}}{2\pi} +\sum_{l \in \mathbb{Z}_5}\int_{-\infty}^{+\infty} \frac{1}{2\pi i}\frac{d}{d\theta_{k}}\log{S_{kl}(\theta_{{k}},\theta_{{l}})}\;\rho_{l}(\theta_{{l}})d\theta_{{l}}= \rho_{k}+\bar{\rho}_{k}\,,\quad k \in \mathbb{Z}_5\,. 
+\end{equation}
+Now we need to minimise the free energy of the twisted theory:
+\begin{equation}
+   - L R f=\sum_{k\in \mathbb{Z}_5}(-L E_k + T S_k+i \mu_{k})
+\end{equation}
+where as usual we have defined:
+\begin{align}
+    &E_k=\int m \cosh(\theta) \rho_k(\theta)d\theta\,,\\&
+    S_k=\int d\theta((\rho_{k}+\bar\rho_k)\log{(\rho_{k}+\bar\rho_k)}-\rho_{k}\log{\rho_{k}}-\bar\rho_{k}\log{\bar\rho_{k}})\,.
+\end{align}
+This minimisation problem must take into account the existing constraint between $\delta \rho_k$ and $\delta \bar\rho_k$, which is found by varying \eqref{eq:densityconstr}:
+\begin{equation}
+    \delta \rho_k+\delta \bar\rho_k= +\sum_{l \in \mathbb{Z}_5}\int_{-\infty}^{+\infty} \frac{1}{2\pi i}\frac{d}{d\theta_{k}}\log{S_{kl}(\theta_{{k}},\theta_{{l}})}\;\delta\rho_{l}(\theta_{{l}})d\theta_{{l}}
+\end{equation}
+
+\end{document}

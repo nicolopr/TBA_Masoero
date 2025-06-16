@@ -7,8 +7,8 @@ def TBA_loop(R, m, A, rapidityMax,rapidityMin,numPoints):
     # Initialize convergence parameters
     delta = 1
     iteration = 0
-    deltaThreshold = 1e-10
-    maxIterations = 1000
+    deltaThreshold = 1e-15
+    maxIterations = 500
 
     #discretize rapidity space
     rapidityVals,step=discretize_rapidity(rapidityMax,rapidityMin,numPoints)
@@ -56,5 +56,5 @@ def TBA_loop(R, m, A, rapidityMax,rapidityMin,numPoints):
         epsilon2Old = epsilon2New
 
         # Print iteration info
-        # print(f"Iteration {iteration}: delta = {delta}")
+    print(f"Iteration {iteration}: delta = {delta}")
     return epsilonm2New, epsilonm1New, epsilon0New, epsilon1New, epsilon2New

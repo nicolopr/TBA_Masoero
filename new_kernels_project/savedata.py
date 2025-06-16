@@ -1,6 +1,7 @@
 from wolframclient.language import wl, wlexpr
 from wolframclient.serializers import export
 import os
+
 #save data for epsilons
 def get_filename():
     script_dir = os.path.dirname(__file__)
