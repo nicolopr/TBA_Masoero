@@ -26,10 +26,11 @@ def compute_convolution(coeff, Le, step, phi):
 
 conv_jax=jax.jit(compute_convolution)
 
-# Precompute phi matrices
+# Precompute phi matrices with vmap
 def compute_phi_on_rapidities(rapidityVals):
     beta_diff = rapidityVals[:, jnp.newaxis] - rapidityVals[jnp.newaxis, :]  # Shape (numPoints, numPoints)
-    phi1 = phi(beta_diff)
+    batched_phi=jax.vmap(phi)
+    phi1 = batched_phi(beta_diff)
     return phi1
 
 # Iterative loop - to be jitted
@@ -53,7 +54,7 @@ def TBA_loop(r,rapidityMax,rapidityMin,numPoints):
         iteration += 1
 
         # Compute convolution terms
-        lambda1 = np.log(1 + jnp.exp(-epsilon1Old))
+        lambda1 = jnp.log(1 + jnp.exp(-epsilon1Old))
 
         coeffs_list = [1, 1, 1, 1, 1]  # For conv1
         conv1 = conv_jax(coeffs_list[0], lambda1, step, phi)
@@ -81,7 +82,15 @@ def TBA_loop_jit(r,rapidityMax,rapidityMin,numPoints):
     #compute kernels
     phi= compute_phi_on_rapidities(rapidityVals)
     #initialize epsilon to their free value
-    epsilon1Old= r * jnp.cosh(rapidityVals)
+    def rcosh(rapidity):
+        return r * jnp.cosh(rapidityVals)
+    def lambdas(eps):
+        return jnp.log(1 + jnp.exp(-eps))
+    
+    batch_cosh=jax.vmap(rcosh)
+    batch_lambda=jax.vmap(lambdas)
+
+    epsilon1Old= batch_cosh(rapidityVals)
     # init_energy(r, rapidityVals)
     initial_state = (delta, iteration, epsilon1Old, epsilon1Old)
 
@@ -96,13 +105,13 @@ def TBA_loop_jit(r,rapidityMax,rapidityMin,numPoints):
     def body_fun(loop_vars):
         delta, iteration, epsilon1Old, _ = loop_vars
         # Compute convolution terms
-        lambda1 = jnp.log(1 + jnp.exp(-epsilon1Old))
+        lambda1 = batch_lambda(-epsilon1Old)
 
         coeffs_list = [1, 1, 1, 1, 1]  # For conv1
         conv1 = conv_jax(coeffs_list[0], lambda1, step, phi)
 
         # Update epsilon values
-        epsilon1New = r * jnp.cosh(rapidityVals) - conv1
+        epsilon1New = batch_cosh(rapidityVals) - conv1
         # Compute convergence delta
         new_delta= jnp.max(jnp.abs(epsilon1New - epsilon1Old))
 
