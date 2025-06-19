@@ -116,7 +116,6 @@ def cycle_central_charge(r_min, r_max, r_step):
         e1=TBA_loop(r,rapidityMax,rapidityMin,numPoints)
         # plot_Y0(rapvals[0],logY0)
         # plot_epsilon_real(rapvals[0],e1,e2,e3,e4,e5)
-        plot_epsilon_real(rapidityvals,np.real(np.log(1+np.exp(-e1))))
         cc=compute_central_charge(r, rapidityvals, e1, discretize_rapidity(rapidityMax, rapidityMin, numPoints)[1])
         central_charges.append([r,cc])
         r=r+r_step

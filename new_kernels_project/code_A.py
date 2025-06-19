@@ -203,11 +203,11 @@ rapidityMax = 20
 rapidityMin = -20
 
 numPoints = 1001
-A = 10
+A = 0
 
 rapidityvals=discretize_rapidity(rapidityMax,rapidityMin, numPoints)[0]
 
-r_min=0.01
+r_min=0.000001
 r_max=0.1
 num_of_steps = 2
 r_step=(r_max-r_min)/num_of_steps
